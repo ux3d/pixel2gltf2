@@ -28,7 +28,7 @@
 		}
 	],
     "asset" : {
-        "generator" : "image2gltf2 by UX3D",
+        "generator" : "pixel2gltf2 by UX3D",
         "version" : "2.0"
     },
 	"bufferViews": [
