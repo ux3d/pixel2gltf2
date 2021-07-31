@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include <nlohmann/json.hpp>
@@ -172,6 +173,8 @@ int main(int argc, char *argv[])
 
     bool first = true;
 
+    std::map<std::tuple<uint8_t, uint8_t, uint8_t>, size_t> materialIndices;
+
     for (uint32_t y = 0; y < imageData.height; y+=pixelSize)
     {
         for (uint32_t x = 0; x < imageData.width; x+=pixelSize)
@@ -190,27 +193,43 @@ int main(int argc, char *argv[])
 					materialIndex = 0;
 				}
 
-				//
+				// Only create material, if not present.
 
-				json material = glTF["materials"][0];
+        		std::tuple<uint8_t, uint8_t, uint8_t> rgb = std::make_tuple(pixel[0], pixel[1], pixel[2]);
 
-				//
+        		auto materialIterator = materialIndices.find(rgb);
+        		if (materialIterator != materialIndices.end())
+        		{
+        			// Use existing material
 
-				json& baseColorFactor = material["pbrMetallicRoughness"]["baseColorFactor"];
-				baseColorFactor[0] = powf((float)pixel[0] / 255.0f, 2.2f);
-				baseColorFactor[1] = powf((float)pixel[1] / 255.0f, 2.2f);
-				baseColorFactor[2] = powf((float)pixel[2] / 255.0f, 2.2f);
+        			materialIndex = materialIterator->second;
+        		}
+        		else
+        		{
+    				json material = glTF["materials"][0];
 
-				//
+    				//
 
-				if (first)
-				{
-					glTF["materials"][0] = material;
-				}
-				else
-				{
-					glTF["materials"].push_back(material);
-				}
+    				json& baseColorFactor = material["pbrMetallicRoughness"]["baseColorFactor"];
+    				baseColorFactor[0] = powf((float)pixel[0] / 255.0f, 2.2f);
+    				baseColorFactor[1] = powf((float)pixel[1] / 255.0f, 2.2f);
+    				baseColorFactor[2] = powf((float)pixel[2] / 255.0f, 2.2f);
+
+    				//
+
+    				if (first)
+    				{
+    					glTF["materials"][0] = material;
+    				}
+    				else
+    				{
+    					glTF["materials"].push_back(material);
+    				}
+
+    				// Store material index
+
+    				materialIndices[rgb] = materialIndex;
+        		}
 
 				//
 				// Mesh
