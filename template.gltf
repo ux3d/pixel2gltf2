@@ -15,7 +15,6 @@
 				-1.0,
 				-1.0
 			],
-			"name": "Vertices",
 			"type": "VEC3"
 		},
 		{
@@ -23,7 +22,6 @@
 			"byteOffset": 0,
 			"componentType": 5123,
 			"count": 36,
-			"name": "Indices",
 			"type": "SCALAR"
 		}
 	],
@@ -55,20 +53,21 @@
     "materials" : [
 		{
 			"extensions": {
-				"KHR_materials_unlit": {}
+				"KHR_materials_unlit": {
+				}
 			},
 			"pbrMetallicRoughness": {
 				"baseColorFactor": [
 					1.0,
 					1.0,
 					1.0,
-					1.0				]
+					1.0				
+				]
 			}
 		}
     ],
 	"meshes": [
 		{
-			"name": "Cube",
 			"primitives": [
 				{
 					"attributes": {
@@ -83,13 +82,11 @@
 	],
 	"nodes": [
 		{
-			"name": "Root"
 		}
 	],
 	"scene": 0,
 	"scenes": [
 		{
-			"name": "Voxels",
 			"nodes": [
 				0
 			]

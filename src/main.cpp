@@ -241,24 +241,33 @@ int main(int argc, char *argv[])
 					meshIndex = 0;
 				}
 
-				//
+				// Same goes with a mesh
 
-				json mesh = glTF["meshes"][0];
+        		if (materialIterator != materialIndices.end())
+        		{
+        			// If the material can be reused, the mesh can be reused as well.
 
-				//
+        			meshIndex = materialIndex;
+        		}
+        		else
+        		{
+					json mesh = glTF["meshes"][0];
 
-				mesh["primitives"][0]["material"] = materialIndex;
+					//
 
-				//
+					mesh["primitives"][0]["material"] = materialIndex;
 
-				if (first)
-				{
-					glTF["meshes"][0] = mesh;
-				}
-				else
-				{
-					glTF["meshes"].push_back(mesh);
-				}
+					//
+
+					if (first)
+					{
+						glTF["meshes"][0] = mesh;
+					}
+					else
+					{
+						glTF["meshes"].push_back(mesh);
+					}
+        		}
 
 				//
 				// Node
